@@ -3,9 +3,12 @@ import { Container, Typography, TextField, Button, Select, InputLabel, MenuItem,
 import './CadastroPost.css';
 import { useNavigate, useParams } from 'react-router-dom';
 import Tema from '../../../models/Tema';
-import useLocalStorage from 'react-use-localstorage';
+
 import Postagem from '../../../models/Postagem';
 import { busca, buscaId, post, put } from '../../../services/Service';
+import { TokenState } from '../../../store/tokens/tokensReducer';
+import { useSelector } from 'react-redux';
+import { toast } from 'react-toastify';
 
 function CadastroPost() {
  
@@ -15,12 +18,18 @@ function CadastroPost() {
 
     const [temas, setTemas] = useState<Tema[]>([])
 
-    const [token, setToken] = useLocalStorage('token')
+    const token = useSelector <TokenState, TokenState["tokens"]> (
+
+        (state) => state.tokens
+       
+    );
+    
 
     const [tema, setTema] = useState<Tema>({
         id: 0,
         descricao: ''
     })
+
 
     const [postagem, setPostagem] = useState<Postagem>({
         id: 0,
@@ -32,7 +41,19 @@ function CadastroPost() {
 
     useEffect(() => {
         if (token === "") {
-            alert("Você precisa estar logado")
+            toast.error("Você Precisa Estar Logado", {
+                position: "top-right",
+                autoClose: 2000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: false,
+                draggable: false,
+                theme: "colored",
+                progress: undefined,
+     
+            });
+
+
             history("/login")
         }
     }, [token])
@@ -85,9 +106,36 @@ function CadastroPost() {
                         'Authorization': token
                     }
                 })
-                alert('Postagem atualizada com sucesso');
+            
+                
+                toast.success("Postagem Atualizada Com Sucesso", {
+                    position: "top-right",
+                    autoClose: 2000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: false,
+                    draggable: false,
+                    theme: "colored",
+                    progress: undefined,
+         
+                });
+               
             } catch (error) {
-                alert("Erro ao atualizar, verifique os campos")
+            
+                toast.error("Erro ao Atualizar, Verifique Os Campos", {
+                    position: "top-right",
+                    autoClose: 2000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: false,
+                    draggable: false,
+                    theme: "colored",
+                    progress: undefined,
+         
+                });
+               
+                
+            
             }
 
         } else {
@@ -97,9 +145,34 @@ function CadastroPost() {
                         'Authorization': token
                     }
                 })
-                alert('Postagem cadastrada com sucesso');
+                
+
+                toast.success("Postagem Cadastrada Com Sucesso", {
+                    position: "top-right",
+                    autoClose: 2000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: false,
+                    draggable: false,
+                    theme: "colored",
+                    progress: undefined,
+         
+                });
+
+                
             } catch (error) {
-                alert("Erro ao cadastrar, verifique os campos")
+            
+                toast.error("Erro ao Cadastrar, Verifique os Campos", {
+                    position: "top-right",
+                    autoClose: 2000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: false,
+                    draggable: false,
+                    theme: "colored",
+                    progress: undefined,
+         
+                });
             }
         }
         back()
